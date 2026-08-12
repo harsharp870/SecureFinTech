@@ -6,8 +6,8 @@ SecureFinTech is built in six distinct phases. We begin with foundation & authen
 
 ## Phases
 
-- [ ] **Phase 1: Foundation & Authentication** - PostgreSQL schema, FastAPI backend setup, JWT auth, RBAC (User/Admin), password hashing, rate limiting, and lockout.
-- [ ] **Phase 2: Payment Engine & Ledger** - Wallet balance management, atomic P2P transfers, transaction status lifecycle, and transaction history.
+- [x] **Phase 1: Foundation & Authentication** - PostgreSQL schema, FastAPI backend setup, JWT auth, RBAC (User/Admin), password hashing, rate limiting, and lockout.
+- [x] **Phase 2: Payment Engine & Ledger** - Wallet balance management, atomic P2P transfers, transaction status lifecycle, and transaction history.
 - [ ] **Phase 3: AI Fraud Scoring & Rule Engine** - Hybrid fraud engine (deterministic security rules + Scikit-Learn anomaly detector), XAI feature attribution, and automated risk actions.
 - [ ] **Phase 4: Cybersecurity & Audit Logging** - Security event logger, OWASP API controls, threat intelligence simulation, and immutable audit logs.
 - [ ] **Phase 5: User & Admin Frontend Dashboards** - React (Vite + TS) dark-mode UI, User transaction portal, Admin security console with XAI visualizations.
@@ -26,8 +26,8 @@ SecureFinTech is built in six distinct phases. We begin with foundation & authen
 **Plans**: 2 plans
 
 Plans:
-- [ ] 01-01: Setup FastAPI project structure, PostgreSQL database connection, SQLAlchemy ORM models, and Alembic migrations.
-- [ ] 01-02: Implement Auth router (signup, login, JWT issuance, password hashing), RBAC middleware, and login rate limiter / account lockout.
+- [x] 01-01: Setup FastAPI project structure, PostgreSQL database connection, SQLAlchemy ORM models, and Alembic migrations.
+- [x] 01-02: Implement Auth router (signup, login, JWT issuance, password hashing), RBAC middleware, and login rate limiter / account lockout.
 
 ### Phase 2: Payment Engine & Ledger
 **Goal**: Atomic, secure digital payment simulation and transaction history.
@@ -40,8 +40,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 02-01: Create Wallet and Transaction database schemas, balance update logic with database transactions.
-- [ ] 02-02: Implement Payment API endpoints (transfer, transaction history, detail lookup) and validation logic.
+- [x] 02-01: Create Wallet and Transaction database schemas, balance update logic with database transactions.
+- [x] 02-02: Implement Payment API endpoints (transfer, transaction history, detail lookup) and validation logic.
 
 ### Phase 3: AI Fraud Scoring & Rule Engine
 **Goal**: Real-time hybrid fraud detection engine with explainable AI (XAI) risk scoring.
@@ -108,8 +108,8 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Authentication | 0/2 | Not started | - |
-| 2. Payment Engine & Ledger | 0/2 | Not started | - |
+| 1. Foundation & Authentication | 2/2 | Complete | 2026-08-13 |
+| 2. Payment Engine & Ledger | 2/2 | Complete | 2026-08-13 |
 | 3. AI Fraud Scoring & Rule Engine | 0/2 | Not started | - |
 | 4. Cybersecurity & Audit Logging | 0/2 | Not started | - |
 | 5. User & Admin Frontend Dashboards | 0/3 | Not started | - |
