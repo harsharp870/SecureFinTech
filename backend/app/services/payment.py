@@ -109,6 +109,8 @@ def execute_p2p_transfer(
     eval_result = evaluator.evaluate(db, tx)
     tx.risk_score = eval_result.risk_score
     tx.risk_level = eval_result.risk_level
+    tx.risk_factors = eval_result.risk_factors
+
 
     if eval_result.decision == "APPROVE":
         sender_wallet.balance -= amount

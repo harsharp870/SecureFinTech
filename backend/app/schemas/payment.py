@@ -35,6 +35,7 @@ class TransactionResponse(BaseModel):
     status: TransactionStatus
     risk_score: Optional[float] = 0.0
     risk_level: Optional[str] = "LOW"
+    risk_factors: Optional[str] = None
     failure_reason: Optional[str] = None
     note: Optional[str] = None
     created_at: datetime
@@ -45,6 +46,27 @@ class TransactionDetailResponse(TransactionResponse):
     sender_name: Optional[str] = None
     recipient_email: Optional[str] = None
     recipient_name: Optional[str] = None
+
+class XAIRiskFactorItem(BaseModel):
+    factor_type: str
+    rule_name: str
+    impact: float
+    is_critical: bool
+    description: str
+
+class XAIExplanationResponse(BaseModel):
+    transaction_id: str
+    reference_id: str
+    amount: Decimal
+    status: TransactionStatus
+    risk_score: float
+    risk_level: str
+    action: str
+    rules_score: float
+    ml_score: float
+    risk_factors: List[XAIRiskFactorItem]
+    explanation_summary: str
+
 
 class PaginatedTransactionHistory(BaseModel):
     total: int

@@ -39,10 +39,12 @@ class Transaction(Base):
     status = Column(Enum(TransactionStatus), nullable=False, default=TransactionStatus.PENDING)
     risk_score = Column(Float, nullable=True, default=0.0)
     risk_level = Column(String(20), nullable=True, default="LOW")
+    risk_factors = Column(String, nullable=True)
     failure_reason = Column(String(255), nullable=True)
     note = Column(String(255), nullable=True)
     created_at = Column(DateTime(timezone=True), default=utc_now, nullable=False)
     updated_at = Column(DateTime(timezone=True), default=utc_now, onupdate=utc_now, nullable=False)
+
 
     sender = relationship("User", foreign_keys=[sender_id])
     recipient = relationship("User", foreign_keys=[recipient_id])
