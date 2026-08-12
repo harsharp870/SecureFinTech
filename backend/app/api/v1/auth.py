@@ -25,7 +25,10 @@ from app.schemas.auth import (
 from app.schemas.user import UserPublic
 from app.api.deps import get_current_user
 
+from app.services.payment import get_or_create_wallet
+
 router = APIRouter(prefix="/auth", tags=["Authentication"])
+
 
 
 def _get_client_ip(request: Request) -> str:
@@ -72,7 +75,9 @@ def signup(payload: SignupRequest, db: Session = Depends(get_db)):
     db.add(user)
     db.commit()
     db.refresh(user)
+    get_or_create_wallet(db, user.id)
     return user
+
 
 
 @router.post("/login", response_model=TokenResponse)

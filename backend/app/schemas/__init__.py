@@ -7,6 +7,14 @@ from app.schemas.auth import (
     TokenPayload,
 )
 from app.schemas.user import UserPublic, UserList
+from app.schemas.payment import (
+    WalletResponse,
+    DepositRequest,
+    TransferRequest,
+    TransactionResponse,
+    TransactionDetailResponse,
+    PaginatedTransactionHistory,
+)
 
 __all__ = [
     "SignupRequest",
@@ -16,4 +24,10 @@ __all__ = [
     "TokenPayload",
     "UserPublic",
     "UserList",
+    "WalletResponse",
+    "DepositRequest",
+    "TransferRequest",
+    "TransactionResponse",
+    "TransactionDetailResponse",
+    "PaginatedTransactionHistory",
 ]

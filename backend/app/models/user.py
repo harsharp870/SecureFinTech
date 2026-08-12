@@ -2,7 +2,9 @@ import uuid
 import enum
 from datetime import datetime
 from sqlalchemy import Column, String, Boolean, Integer, DateTime, Enum
+from sqlalchemy.orm import relationship
 from app.core.database import Base
+
 
 class UserRole(str, enum.Enum):
     USER = "USER"
@@ -22,3 +24,6 @@ class User(Base):
     locked_until = Column(DateTime, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+
+    wallet = relationship("Wallet", back_populates="user", uselist=False, cascade="all, delete-orphan")
+

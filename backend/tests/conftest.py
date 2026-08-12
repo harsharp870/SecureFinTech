@@ -33,3 +33,13 @@ def setup_database():
 def client(setup_database):
     with TestClient(app) as c:
         yield c
+
+
+@pytest.fixture()
+def db(setup_database):
+    db_session = TestingSessionLocal()
+    try:
+        yield db_session
+    finally:
+        db_session.close()
+
