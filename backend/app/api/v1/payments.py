@@ -1,6 +1,7 @@
 from typing import Optional
 from math import ceil
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
+
 from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.api.deps import get_current_user
@@ -25,6 +26,7 @@ router = APIRouter(prefix="/payments", tags=["Payments"])
 @router.post("/transfer", response_model=TransactionResponse, status_code=status.HTTP_201_CREATED)
 def transfer(
     payload: TransferRequest,
+    request: Request,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
@@ -38,6 +40,13 @@ def transfer(
             detail="Either recipient_email or recipient_id must be provided"
         )
 
+    forwarded = request.headers.get("X-Forwarded-For")
+    if forwarded:
+        client_ip = forwarded.split(",")[0].strip()
+    else:
+        client_ip = request.client.host if request.client else "0.0.0.0"
+
+
     try:
         tx = execute_p2p_transfer(
             db=db,
@@ -46,6 +55,7 @@ def transfer(
             recipient_email=payload.recipient_email,
             recipient_id=payload.recipient_id,
             note=payload.note,
+            client_ip=client_ip,
         )
         return tx
     except PaymentException as exc:

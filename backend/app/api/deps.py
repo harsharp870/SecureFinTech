@@ -73,3 +73,5 @@ def require_role(*roles: UserRole):
 
 require_admin = require_role(UserRole.ADMIN)
 require_user = require_role(UserRole.USER, UserRole.ADMIN)
+get_current_admin_user = require_admin
+

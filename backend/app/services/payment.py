@@ -45,6 +45,7 @@ def execute_p2p_transfer(
     recipient_email: Optional[str] = None,
     recipient_id: Optional[str] = None,
     note: Optional[str] = None,
+    client_ip: Optional[str] = None,
     evaluator: BaseFraudEvaluator = default_fraud_evaluator
 ) -> Transaction:
     """
@@ -106,10 +107,15 @@ def execute_p2p_transfer(
     db.flush()  # Populates tx.id and reference_id
 
     # 4. Evaluate transaction via FraudEvaluator hook
-    eval_result = evaluator.evaluate(db, tx)
+    try:
+        eval_result = evaluator.evaluate(db, tx, client_ip=client_ip)
+    except TypeError:
+        eval_result = evaluator.evaluate(db, tx)
+
     tx.risk_score = eval_result.risk_score
     tx.risk_level = eval_result.risk_level
     tx.risk_factors = eval_result.risk_factors
+
 
 
     if eval_result.decision == "APPROVE":

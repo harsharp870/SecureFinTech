@@ -38,6 +38,9 @@ def _get_client_ip(request: Request) -> str:
     return request.client.host if request.client else "unknown"
 
 
+from app.services.audit_service import log_audit_event
+from app.models.audit import AuditCategory, AuditSeverity
+
 def _record_attempt(
     db: Session,
     email: str,
@@ -55,6 +58,20 @@ def _record_attempt(
     )
     db.add(attempt)
     db.commit()
+
+    # Record security audit event
+    action = "LOGIN_SUCCESS" if success else ("ACCOUNT_LOCKED" if reason == "account_locked" else "LOGIN_FAILED")
+    severity = AuditSeverity.INFO.value if success else (AuditSeverity.CRITICAL.value if reason == "account_locked" else AuditSeverity.WARNING.value)
+    log_audit_event(
+        db=db,
+        action=action,
+        category=AuditCategory.SECURITY_EVENT.value,
+        severity=severity,
+        actor_id=user_id,
+        ip_address=ip,
+        details={"email": email, "reason": reason}
+    )
+
 
 
 @router.post("/signup", response_model=UserPublic, status_code=status.HTTP_201_CREATED)
