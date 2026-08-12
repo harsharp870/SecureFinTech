@@ -8,12 +8,14 @@ SecureFinTech is built in six distinct phases. We begin with foundation & authen
 
 - [x] **Phase 1: Foundation & Authentication** - PostgreSQL schema, FastAPI backend setup, JWT auth, RBAC (User/Admin), password hashing, rate limiting, and lockout.
 - [x] **Phase 2: Payment Engine & Ledger** - Wallet balance management, atomic P2P transfers, transaction status lifecycle, and transaction history.
-- [ ] **Phase 3: AI Fraud Scoring & Rule Engine** - Hybrid fraud engine (deterministic security rules + Scikit-Learn anomaly detector), XAI feature attribution, and automated risk actions.
-- [ ] **Phase 4: Cybersecurity & Audit Logging** - Security event logger, OWASP API controls, threat intelligence simulation, and immutable audit logs.
+- [x] **Phase 3: AI Fraud Scoring & Rule Engine** - Hybrid fraud engine (deterministic security rules + Scikit-Learn anomaly detector), XAI feature attribution, and automated risk actions.
+- [x] **Phase 4: Cybersecurity & Audit Logging** - Security event logger, OWASP API controls, threat intelligence simulation, and immutable audit logs.
 - [ ] **Phase 5: User & Admin Frontend Dashboards** - React (Vite + TS) dark-mode UI, User transaction portal, Admin security console with XAI visualizations.
 - [ ] **Phase 6: Testing, Docker & Documentation** - Pytest suite, Docker Compose setup, Threat Model, API docs, and demo guides.
 
+
 ## Phase Details
+
 
 ### Phase 1: Foundation & Authentication
 **Goal**: Secure, robust backend foundation with user registration, authentication, RBAC, and rate limiting.
@@ -55,10 +57,11 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 03-01: Build deterministic security rules engine (amount thresholds, velocity, IP/device anomaly) and feature extractor.
-- [ ] 03-02: Build Scikit-Learn anomaly model (IsolationForest), hybrid risk score aggregator, XAI explanation generator, and hook into payment execution.
+- [x] 03-01: Build deterministic security rules engine (amount thresholds, velocity, IP/device anomaly) and feature extractor.
+- [x] 03-02: Build Scikit-Learn anomaly model (IsolationForest), hybrid risk score aggregator, XAI explanation generator, and hook into payment execution.
 
 ### Phase 4: Cybersecurity & Audit Logging
+
 **Goal**: Enterprise-grade security event monitoring, OWASP API protection, and audit logging.
 **Depends on**: Phase 3
 **Requirements**: SECU-01, SECU-02, SECU-03, SECU-04
@@ -69,10 +72,11 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 04-01: Implement SecurityEvent and AuditLog schemas, logger middleware, and OWASP security header middleware.
-- [ ] 04-02: Build Threat Intelligence lookup module and integrate security event alerts into transaction processing.
+- [x] 04-01: Implement SecurityEvent and AuditLog schemas, logger middleware, and OWASP security header middleware.
+- [x] 04-02: Build Threat Intelligence lookup module and integrate security event alerts into transaction processing.
 
 ### Phase 5: User & Admin Frontend Dashboards
+
 **Goal**: Modern responsive dark-mode web application for users and security administrators.
 **Depends on**: Phase 4
 **Requirements**: DASH-01, DASH-02, DASH-03, DASH-04
@@ -110,7 +114,9 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 |-------|----------------|--------|-----------|
 | 1. Foundation & Authentication | 2/2 | Complete | 2026-08-13 |
 | 2. Payment Engine & Ledger | 2/2 | Complete | 2026-08-13 |
-| 3. AI Fraud Scoring & Rule Engine | 0/2 | Not started | - |
-| 4. Cybersecurity & Audit Logging | 0/2 | Not started | - |
+| 3. AI Fraud Scoring & Rule Engine | 2/2 | Complete | 2026-08-13 |
+
+| 4. Cybersecurity & Audit Logging | 2/2 | Complete | 2026-08-13 |
+
 | 5. User & Admin Frontend Dashboards | 0/3 | Not started | - |
 | 6. Testing, Docker & Documentation | 0/2 | Not started | - |
