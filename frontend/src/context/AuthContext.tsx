@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { apiFetch } from '../services/api';
 
 export interface User {
-  id: str;
+  id: string;
   email: string;
   full_name: string;
   role: 'USER' | 'ADMIN';
@@ -14,11 +14,12 @@ interface AuthContextType {
   user: User | null;
   token: string | null;
   loading: boolean;
-  login: (email: str, password: str) => Promise<void>;
-  signup: (fullName: str, email: str, password: str) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
+  signup: (fullName: string, email: string, password: string) => Promise<void>;
   logout: () => void;
   refreshUser: () => Promise<void>;
 }
+
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 

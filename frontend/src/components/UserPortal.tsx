@@ -170,8 +170,8 @@ export const UserPortal: React.FC<UserPortalProps> = ({ onOpenXAI }) => {
 
   return (
     <div style={{ minHeight: '100vh', padding: '1.5rem', maxWidth: '1200px', margin: '0 auto' }}>
-      {/* Topbar Header */}
-      <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }} className="glass-card" style={{ padding: '1.25rem 2rem', marginBottom: '2rem' }}>
+      <header className="glass-card" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem', padding: '1.25rem 2rem' }}>
+
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: 'rgba(0, 242, 254, 0.15)', color: 'var(--accent-cyan)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Wallet size={24} />
