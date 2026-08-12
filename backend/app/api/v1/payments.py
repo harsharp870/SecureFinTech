@@ -1,0 +1,109 @@
+from typing import Optional
+from math import ceil
+from fastapi import APIRouter, Depends, HTTPException, Query, status
+from sqlalchemy.orm import Session
+from app.core.database import get_db
+from app.api.deps import get_current_user
+from app.models.user import User
+from app.schemas.payment import (
+    TransferRequest,
+    TransactionResponse,
+    TransactionDetailResponse,
+    PaginatedTransactionHistory,
+)
+from app.services.payment import (
+    execute_p2p_transfer,
+    get_transaction_history,
+    get_transaction_by_id,
+    PaymentException,
+)
+
+router = APIRouter(prefix="/payments", tags=["Payments"])
+
+@router.post("/transfer", response_model=TransactionResponse, status_code=status.HTTP_201_CREATED)
+def transfer(
+    payload: TransferRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Execute a peer-to-peer digital wallet transfer to another user.
+    Uses row-level pessimistic locking and triggers risk evaluation hook.
+    """
+    if not payload.recipient_email and not payload.recipient_id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Either recipient_email or recipient_id must be provided"
+        )
+
+    try:
+        tx = execute_p2p_transfer(
+            db=db,
+            sender_id=current_user.id,
+            amount=payload.amount,
+            recipient_email=payload.recipient_email,
+            recipient_id=payload.recipient_id,
+            note=payload.note,
+        )
+        return tx
+    except PaymentException as exc:
+        raise HTTPException(status_code=exc.status_code, detail=exc.message)
+
+@router.get("/history", response_model=PaginatedTransactionHistory)
+def get_history(
+    page: int = Query(1, ge=1, description="Page number"),
+    size: int = Query(10, ge=1, le=100, description="Items per page"),
+    direction: Optional[str] = Query("all", description="Filter by direction: all, sent, received"),
+    status: Optional[str] = Query(None, description="Filter by status: APPROVED, PENDING, FLAGGED, BLOCKED, FAILED"),
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Retrieve paginated transaction history for the current user."""
+    items, total = get_transaction_history(
+        db=db,
+        user_id=current_user.id,
+        page=page,
+        size=size,
+        direction=direction,
+        status=status,
+    )
+
+    pages = ceil(total / size) if size > 0 else 0
+    return PaginatedTransactionHistory(
+        total=total,
+        page=page,
+        size=size,
+        pages=pages,
+        items=items,
+    )
+
+@router.get("/{transaction_id}", response_model=TransactionDetailResponse)
+def get_transaction_detail(
+    transaction_id: str,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Retrieve details for a single transaction by ID or reference ID."""
+    tx = get_transaction_by_id(db, transaction_id)
+    if not tx:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Transaction not found"
+        )
+
+    # Authorization check: user must be sender or recipient (or admin)
+    if current_user.id not in [tx.sender_id, tx.recipient_id] and current_user.role != "ADMIN":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Access denied to transaction details"
+        )
+
+    response_data = TransactionDetailResponse.model_validate(tx)
+    if tx.sender:
+        response_data.sender_email = tx.sender.email
+        response_data.sender_name = tx.sender.full_name
+    if tx.recipient:
+        response_data.recipient_email = tx.recipient.email
+        response_data.recipient_name = tx.recipient.full_name
+
+    return response_data

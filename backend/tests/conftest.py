@@ -6,11 +6,10 @@ from sqlalchemy.orm import sessionmaker
 from app.core.database import Base, get_db
 from app.main import app
 
-# Use in-memory SQLite for tests
+# Use SQLite for tests
 TEST_DATABASE_URL = "sqlite:///./test_securefintech.db"
 engine = create_engine(TEST_DATABASE_URL, connect_args={"check_same_thread": False})
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
 
 def override_get_db():
     db = TestingSessionLocal()
@@ -18,7 +17,6 @@ def override_get_db():
         yield db
     finally:
         db.close()
-
 
 @pytest.fixture(scope="session", autouse=True)
 def setup_database():
@@ -28,12 +26,10 @@ def setup_database():
     Base.metadata.drop_all(bind=engine)
     app.dependency_overrides.clear()
 
-
 @pytest.fixture()
 def client(setup_database):
     with TestClient(app) as c:
         yield c
-
 
 @pytest.fixture()
 def db(setup_database):
@@ -42,4 +38,3 @@ def db(setup_database):
         yield db_session
     finally:
         db_session.close()
-
